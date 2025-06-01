@@ -1,7 +1,9 @@
 "use client";
 
-import Navbar from "@/components/navbar";
+import Sidebar from "@/components/sidebar";
+import ChatView from "@/features/chat/chatview";
 import { useState } from "react";
+import { Box } from "@chakra-ui/react";
 
 export default function Home() {
   const [selectedTab, setSelectedTab] = useState<
@@ -9,6 +11,12 @@ export default function Home() {
   >("chat");
 
   return (
-    <Navbar selectedTab={selectedTab} setSelectedTab={setSelectedTab}></Navbar>
+    <>
+      <Sidebar
+        selectedTab={selectedTab}
+        setSelectedTab={setSelectedTab}
+      ></Sidebar>
+      <Box ml="200px">{selectedTab === "chat" && <ChatView />}</Box>
+    </>
   );
 }
