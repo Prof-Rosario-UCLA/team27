@@ -1,6 +1,8 @@
 "use client";
 
-import { VStack, HStack, Text, Box, Input } from "@chakra-ui/react";
+import { Stack, Text } from "@chakra-ui/react";
+import WebSection from "./components/web";
+import DocSection from "./components/documents";
 
 export default function LibraryView() {
   return (
@@ -8,22 +10,20 @@ export default function LibraryView() {
       <Text fontSize="xl" fontWeight="semibold" p="4">
         Library
       </Text>
-      <HStack justifyContent="space-between">
-        <Box>
-          <VStack>
-            <Text>Web</Text>
-            <Input></Input>
-            <Text>Sources</Text>
-          </VStack>
-        </Box>
-        <Box>
-          <VStack>
-            <Text>Documents</Text>
-            <Box borderWidth="1px"></Box>
-            <Text>Sources</Text>
-          </VStack>
-        </Box>
-      </HStack>
+      <Stack
+        px="16"
+        direction={{
+          base: "column",
+          xl: "row",
+        }}
+        gap="16"
+        justify="center"
+        align="center"
+        mx="auto"
+      >
+        <WebSection />
+        <DocSection />
+      </Stack>
     </>
   );
 }

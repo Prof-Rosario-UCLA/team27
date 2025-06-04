@@ -17,7 +17,7 @@ export default function Home() {
         selectedTab={selectedTab}
         setSelectedTab={setSelectedTab}
       ></Sidebar>
-      <Box ml="200px">
+      <Box pl="200px">
         {selectedTab === "chat" && <ChatView />}
         {selectedTab === "library" && <LibraryView />}
       </Box>

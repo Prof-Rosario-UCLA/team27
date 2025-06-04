@@ -1,7 +1,7 @@
 "use client";
 
 import { VStack, HStack, Text } from "@chakra-ui/react";
-import { FaSearch, FaBook, FaFacebookMessenger } from "react-icons/fa";
+import { FaCog, FaBook, FaComment } from "react-icons/fa";
 
 export default function Sidebar({
   selectedTab,
@@ -36,7 +36,7 @@ export default function Sidebar({
           bg: "gray.600",
         }}
       >
-        <FaFacebookMessenger />
+        <FaComment />
         <Text>Chat</Text>
       </HStack>
       <HStack
@@ -66,7 +66,7 @@ export default function Sidebar({
           bg: "gray.600",
         }}
       >
-        <FaSearch />
+        <FaCog />
         <Text>Settings</Text>
       </HStack>
     </VStack>
