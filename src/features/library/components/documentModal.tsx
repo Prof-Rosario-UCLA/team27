@@ -6,6 +6,8 @@ import {
   ModalBody,
   ModalCloseButton,
   Text,
+  Box,
+  Spinner,
 } from "@chakra-ui/react";
 
 import { useEffect, useState } from "react";
@@ -22,10 +24,12 @@ export default function DocumentModal({
   onClose,
 }: DocumentModalProps) {
   const [documentBody, setDocumentBody] = useState("");
+  const [documentLoading, setDocumentLoading] = useState(true);
 
   useEffect(() => {
     async function loadDocument() {
       if (selectedDocument && selectedDocument != "") {
+        setDocumentLoading(true);
         console.log("Loading document:", selectedDocument);
         const encodedUrl = encodeURIComponent(selectedDocument);
         const response = await fetch("/api/web/get/" + encodedUrl);
@@ -34,6 +38,7 @@ export default function DocumentModal({
         }
         const data = await response.json();
         setDocumentBody(data.content);
+        setDocumentLoading(false);
       }
     }
 
@@ -50,7 +55,10 @@ export default function DocumentModal({
           <ModalHeader>{selectedDocument}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Text>{documentBody}</Text>
+            <Box>
+              {documentLoading && <Spinner />}
+              <Text>{documentBody}</Text>
+            </Box>
           </ModalBody>
         </ModalContent>
       </Modal>

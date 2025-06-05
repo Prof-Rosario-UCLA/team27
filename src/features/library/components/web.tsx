@@ -1,4 +1,4 @@
-import { Box, VStack, Text, Input, Button } from "@chakra-ui/react";
+import { Box, VStack, Text, Input, Button, Spinner } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import DocumentModal from "./documentModal";
 
@@ -7,15 +7,18 @@ export default function WebSection() {
   const [sources, setSources] = useState<string[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedDocument, setSelectedDocument] = useState("");
+  const [sourcesLoading, setSourcesLoading] = useState(true);
 
   useEffect(() => {
     async function fetchSources() {
+      setSourcesLoading(true);
       const response = await fetch("/api/web/getall");
       if (!response.ok) {
         throw new Error("Failed to fetch sources");
       }
       const data = await response.json();
       setSources(data.urls);
+      setSourcesLoading(false);
     }
 
     fetchSources();
@@ -58,6 +61,7 @@ export default function WebSection() {
           </Button>
           <Text fontSize="xl">Sources</Text>
           <Box>
+            {sourcesLoading && <Spinner />}
             {sources.map((source) => (
               <Text
                 p="2"
