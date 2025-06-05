@@ -3,15 +3,18 @@ import { getDB } from "@/lib/db";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { url: string } }
+  context: { params: { url: string } }
 ) {
-  if (!params.url) {
+
+  const { url } = await context.params;
+  
+  if (!url) {
     return NextResponse.json({ error: "url is required" }, { status: 400 });
   }
 
   let decodedUrl: string;
   try {
-    decodedUrl = decodeURIComponent(params.url);
+    decodedUrl = decodeURIComponent(url);
   } catch (error) {
     console.error(error);
     return NextResponse.json({ error: "Invalid URL" }, { status: 400 });

@@ -38,11 +38,11 @@ export async function POST(request: NextRequest) {
   await db.collection("embedded_chunks").insertMany(documents);
   await db.collection("documents").insertOne({
     content: response.results[0].rawContent,
-    source: url,
+    source: response.results[0].url,
   });
 
   return NextResponse.json(
-    { message: response.results[0].rawContent },
+    { source: response.results[0].url },
     { status: 200 }
   );
 }

@@ -1,8 +1,25 @@
 import { Box, VStack, Text, Input, Button } from "@chakra-ui/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import DocumentModal from "./documentModal";
 
 export default function WebSection() {
   const [urlToAdd, setUrlToAdd] = useState("");
+  const [sources, setSources] = useState<string[]>([]);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedDocument, setSelectedDocument] = useState("");
+
+  useEffect(() => {
+    async function fetchSources() {
+      const response = await fetch("/api/web/getall");
+      if (!response.ok) {
+        throw new Error("Failed to fetch sources");
+      }
+      const data = await response.json();
+      setSources(data.urls);
+    }
+
+    fetchSources();
+  }, []);
 
   const onSubmit = async () => {
     try {
@@ -17,29 +34,54 @@ export default function WebSection() {
         throw new Error("Failed to add URL");
       }
       const data = await response.json();
-      console.log("URL added successfully:", data);
+      setSources((previousSources) => [data.source, ...previousSources]);
     } catch (err) {
       console.error("Error adding URL:", err);
     }
   };
 
   return (
-    <Box>
-      <VStack>
-        <Text fontSize="2xl" fontWeight="semibold">
-          Web
-        </Text>
-        <Input
-          placeholder="Enter a URL"
-          onChange={(e) => {
-            setUrlToAdd(e.target.value);
-          }}
-        ></Input>
-        <Button onClick={onSubmit} colorScheme="blue">
-          Add URL
-        </Button>
-        <Text fontSize="xl">Sources</Text>
-      </VStack>
-    </Box>
+    <>
+      <Box>
+        <VStack>
+          <Text fontSize="2xl" fontWeight="semibold">
+            Web
+          </Text>
+          <Input
+            placeholder="Enter a URL"
+            onChange={(e) => {
+              setUrlToAdd(e.target.value);
+            }}
+          ></Input>
+          <Button onClick={onSubmit} colorScheme="blue">
+            Add URL
+          </Button>
+          <Text fontSize="xl">Sources</Text>
+          <Box>
+            {sources.map((source) => (
+              <Text
+                p="2"
+                borderRadius="md"
+                borderWidth="1px"
+                key={source}
+                onClick={() => {
+                  setSelectedDocument(source);
+                  setModalOpen(true);
+                }}
+              >
+                {source}
+              </Text>
+            ))}
+          </Box>
+        </VStack>
+      </Box>
+      <DocumentModal
+        isOpen={modalOpen}
+        selectedDocument={selectedDocument}
+        onClose={() => {
+          setModalOpen(false);
+        }}
+      />
+    </>
   );
 }
