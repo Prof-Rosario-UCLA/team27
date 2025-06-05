@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { tavily } from "@tavily/core";
+import { chunkify, embed } from "@/lib/nlp";
+import { getDB } from "@/lib/db";
 
 export async function POST(request: Request) {
   const body = await request.json();
@@ -18,5 +20,25 @@ export async function POST(request: Request) {
     format: "markdown",
   });
 
-  return NextResponse.json({ message: response.results[0].rawContent }, { status: 200 });
+  if (response.results.length == 0) {
+    return NextResponse.json(
+      { error: "Unable to extract content from this URL" },
+      { status: 400 }
+    );
+  }
+
+  const chunks = await chunkify(response.results[0].rawContent);
+  const embeddings = await embed(chunks);
+  const documents = embeddings.map((vector, index) => ({
+    content: chunks[index],
+    embeddings: vector,
+    source: url,
+  }));
+  const db = await getDB();
+  await db.collection("embedded_chunks").insertMany(documents);
+
+  return NextResponse.json(
+    { message: response.results[0].rawContent },
+    { status: 200 }
+  );
 }
