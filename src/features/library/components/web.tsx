@@ -38,7 +38,7 @@ export default function WebSection() {
         <Button onClick={onSubmit} colorScheme="blue">
           Add URL
         </Button>
-        <Text>Sources</Text>
+        <Text fontSize="xl">Sources</Text>
       </VStack>
     </Box>
   );
