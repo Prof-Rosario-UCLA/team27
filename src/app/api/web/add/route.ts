@@ -1,9 +1,9 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { tavily } from "@tavily/core";
 import { chunkify, embed } from "@/lib/nlp";
 import { getDB } from "@/lib/db";
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   const body = await request.json();
   const { url } = body;
 
@@ -36,6 +36,10 @@ export async function POST(request: Request) {
   }));
   const db = await getDB();
   await db.collection("embedded_chunks").insertMany(documents);
+  await db.collection("documents").insertOne({
+    content: response.results[0].rawContent,
+    source: url,
+  });
 
   return NextResponse.json(
     { message: response.results[0].rawContent },
