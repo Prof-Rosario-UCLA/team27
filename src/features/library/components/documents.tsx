@@ -19,14 +19,25 @@ export default function DocSection() {
     setIsDragging(false);
   }, []);
 
-  const onDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
+  const onDrop = useCallback(async (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
     setIsDragging(false);
 
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      const files = Array.from(e.dataTransfer.files);
-      console.log("Files dropped:", files);
+      const file = Array.from(e.dataTransfer.files)[0];
+
+      const body = new FormData();
+      body.append("file", file);
+      const response = await fetch("/api/docs/add", { method: "POST", body });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log("File uploaded successfully:", data);
+      } else {
+        console.error("Error uploading file:", response.statusText);
+      }
+
       e.dataTransfer.clearData();
     }
   }, []);
