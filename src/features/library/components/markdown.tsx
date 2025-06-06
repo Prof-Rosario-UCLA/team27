@@ -7,6 +7,7 @@ import {
   OrderedList,
   ListItem,
   Code,
+  Image,
 } from "@chakra-ui/react";
 
 const Markdown2React: Components = {
@@ -35,7 +36,7 @@ const Markdown2React: Components = {
       {...props}
     />
   ),
-  img: () => <Text display="none"></Text>,
+  img: () => <Image alt="" display="none"></Image>,
 };
 
 export default function MarkdownRenderer({ content }: { content: string }) {

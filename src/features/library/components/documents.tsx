@@ -64,42 +64,43 @@ export default function DocSection() {
   }, []);
 
   return (
-    <>
-      <Box>
-        <VStack>
-          <Text fontSize="2xl" fontWeight="semibold">
-            Documents
-          </Text>
-          <Box
-            borderWidth="1px"
-            borderRadius="md"
-            p="8"
-            onDragOver={onDragOver}
-            onDragLeave={onDragLeave}
-            onDrop={onDrop}
-          >
-            <Text>Drag & drop, or click to select a file.</Text>
-          </Box>
-          <Text fontSize="xl">Sources</Text>
-          <Box>
-            {sourcesLoading && <Spinner />}
-            {sources.map((source) => (
-              <Text
-                p="2"
-                borderRadius="md"
-                borderWidth="1px"
-                key={source}
-                onClick={() => {
-                  setSelectedDocument(source);
-                  setModalOpen(true);
-                }}
-              >
-                {source}
-              </Text>
-            ))}
-          </Box>
-        </VStack>
-      </Box>
+    <Box w="full" background="gray.200" p="4" borderRadius="lg">
+      <VStack>
+        <Text fontSize="2xl" fontWeight="semibold">
+          Documents
+        </Text>
+        <Box
+          borderWidth="1px"
+          borderRadius="md"
+          p="8"
+          onDragOver={onDragOver}
+          onDragLeave={onDragLeave}
+          onDrop={onDrop}
+          w="full"
+          borderColor="gray.400"
+          bgColor="gray.100"
+        >
+          <Text align="center">Drag & drop, or click to select a file.</Text>
+        </Box>
+        <Text fontSize="xl">Sources</Text>
+        <Box>
+          {sourcesLoading && <Spinner />}
+          {sources.map((source) => (
+            <Text
+              p="2"
+              borderRadius="md"
+              borderWidth="1px"
+              key={source}
+              onClick={() => {
+                setSelectedDocument(source);
+                setModalOpen(true);
+              }}
+            >
+              {source}
+            </Text>
+          ))}
+        </Box>
+      </VStack>
       <DocumentModal
         isOpen={modalOpen}
         selectedDocument={selectedDocument}
@@ -107,6 +108,6 @@ export default function DocSection() {
           setModalOpen(false);
         }}
       />
-    </>
+    </Box>
   );
 }

@@ -1,14 +1,17 @@
 "use client";
 
 import { VStack, HStack, Text } from "@chakra-ui/react";
-import { FaCog, FaBook, FaComment } from "react-icons/fa";
+import { FaRegUser, FaRegFolderClosed, FaRegComment } from "react-icons/fa6";
+import { FiSidebar } from "react-icons/fi";
 
 export default function Sidebar({
   selectedTab,
   setSelectedTab,
+  setSidebarOpen,
 }: {
   selectedTab: "chat" | "library" | "settings";
   setSelectedTab: (tab: "chat" | "library" | "settings") => void;
+  setSidebarOpen: (open: boolean) => void;
 }) {
   return (
     <VStack
@@ -21,9 +24,19 @@ export default function Sidebar({
       bg="gray.800"
       alignItems="left"
     >
-      <Text px="2" fontSize="2xl" fontWeight="semibold" textColor="white">
-        Jarvis
-      </Text>
+      <HStack justify="space-between">
+        <Text px="2" fontSize="2xl" fontWeight="semibold" textColor="white">
+          Jarvis
+        </Text>
+        <FiSidebar
+          size="24"
+          color="white"
+          onClick={() => {
+            setSidebarOpen(false);
+          }}
+        />
+      </HStack>
+
       <HStack
         color={selectedTab == "chat" ? "blue.500" : "white"}
         bg={selectedTab == "chat" ? "gray.700" : "transparent"}
@@ -36,7 +49,7 @@ export default function Sidebar({
           bg: "gray.600",
         }}
       >
-        <FaComment />
+        <FaRegComment />
         <Text>Chat</Text>
       </HStack>
       <HStack
@@ -51,7 +64,7 @@ export default function Sidebar({
           bg: "gray.600",
         }}
       >
-        <FaBook />
+        <FaRegFolderClosed />
         <Text>Library</Text>
       </HStack>
       <HStack
@@ -66,8 +79,8 @@ export default function Sidebar({
           bg: "gray.600",
         }}
       >
-        <FaCog />
-        <Text>Settings</Text>
+        <FaRegUser />
+        <Text>Account</Text>
       </HStack>
     </VStack>
   );

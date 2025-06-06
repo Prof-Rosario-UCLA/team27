@@ -44,41 +44,41 @@ export default function WebSection() {
   };
 
   return (
-    <>
-      <Box>
-        <VStack>
-          <Text fontSize="2xl" fontWeight="semibold">
-            Web
-          </Text>
-          <Input
-            placeholder="Enter a URL"
-            onChange={(e) => {
-              setUrlToAdd(e.target.value);
-            }}
-          ></Input>
-          <Button onClick={onSubmit} colorScheme="blue">
-            Add URL
-          </Button>
-          <Text fontSize="xl">Sources</Text>
-          <Box>
-            {sourcesLoading && <Spinner />}
-            {sources.map((source) => (
-              <Text
-                p="2"
-                borderRadius="md"
-                borderWidth="1px"
-                key={source}
-                onClick={() => {
-                  setSelectedDocument(source);
-                  setModalOpen(true);
-                }}
-              >
-                {source}
-              </Text>
-            ))}
-          </Box>
-        </VStack>
-      </Box>
+    <Box w="full" bgColor="gray.200" p="4" borderRadius="lg">
+      <VStack>
+        <Text fontSize="2xl" fontWeight="semibold">
+          Web
+        </Text>
+        <Input
+          placeholder="Enter a URL"
+          onChange={(e) => {
+            setUrlToAdd(e.target.value);
+          }}
+          borderColor="gray.400"
+          bgColor="gray.100"
+        ></Input>
+        <Button onClick={onSubmit} colorScheme="blue">
+          Add URL
+        </Button>
+        <Text fontSize="xl">Sources</Text>
+        <Box w="full">
+          {sourcesLoading && <Spinner />}
+          {sources.map((source) => (
+            <Text
+              p="2"
+              borderRadius="md"
+              borderWidth="1px"
+              key={source}
+              onClick={() => {
+                setSelectedDocument(source);
+                setModalOpen(true);
+              }}
+            >
+              {source}
+            </Text>
+          ))}
+        </Box>
+      </VStack>
       <DocumentModal
         isOpen={modalOpen}
         selectedDocument={selectedDocument}
@@ -86,6 +86,6 @@ export default function WebSection() {
           setModalOpen(false);
         }}
       />
-    </>
+    </Box>
   );
 }
