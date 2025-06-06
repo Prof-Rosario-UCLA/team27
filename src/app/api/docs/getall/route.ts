@@ -5,9 +5,9 @@ export async function GET() {
   const db = await getDB();
   const results = await db
     .collection("documents")
-    .find({ type: "web" }, { projection: { source: 1, _id: 0 } });
+    .find({ type: "file" }, { projection: { source: 1, _id: 0 } });
 
-  const urls = (await results.toArray()).map(doc => doc.source);
+  const urls = (await results.toArray()).map((doc) => doc.source);
 
   if (!urls || urls.length == 0) {
     return NextResponse.json({ urls: [] }, { status: 200 });

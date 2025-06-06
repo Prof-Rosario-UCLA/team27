@@ -11,35 +11,46 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "url is required" }, { status: 400 });
   }
 
-  const tavilyClient = tavily({
-    apiKey: process.env.TAVILY_API_KEY || "",
-  });
+  let response;
 
-  const response = await tavilyClient.extract([url], {
-    extractDepth: "advanced",
-    format: "markdown",
-  });
+  try {
+    const tavilyClient = tavily({
+      apiKey: process.env.TAVILY_API_KEY || "",
+    });
 
-  if (response.results.length == 0) {
+    response = await tavilyClient.extract([url], {
+      extractDepth: "advanced",
+      format: "markdown",
+    });
+
+    if (response.results.length == 0) {
+      return NextResponse.json(
+        { error: "Unable to extract content from this URL" },
+        { status: 400 }
+      );
+    }
+
+    const chunks = await chunkify(response.results[0].rawContent);
+    const embeddings = await embed(chunks);
+    const documents = embeddings.map((vector, index) => ({
+      content: chunks[index],
+      embeddings: vector,
+      source: url,
+    }));
+    const db = await getDB();
+    await db.collection("embedded_chunks").insertMany(documents);
+    await db.collection("documents").insertOne({
+      content: response.results[0].rawContent,
+      source: response.results[0].url,
+      type: "web",
+    });
+  } catch (error) {
+    console.error("Error processing URL:", error);
     return NextResponse.json(
-      { error: "Unable to extract content from this URL" },
-      { status: 400 }
+      { error: "Could not process URL" },
+      { status: 500 }
     );
   }
-
-  const chunks = await chunkify(response.results[0].rawContent);
-  const embeddings = await embed(chunks);
-  const documents = embeddings.map((vector, index) => ({
-    content: chunks[index],
-    embeddings: vector,
-    source: url,
-  }));
-  const db = await getDB();
-  await db.collection("embedded_chunks").insertMany(documents);
-  await db.collection("documents").insertOne({
-    content: response.results[0].rawContent,
-    source: response.results[0].url,
-  });
 
   return NextResponse.json(
     { source: response.results[0].url },

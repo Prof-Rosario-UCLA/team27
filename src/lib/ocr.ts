@@ -9,16 +9,13 @@ export async function ocrFile(
   name: string,
   type: "jpeg" | "png" | "pdf"
 ): Promise<string> {
-
-    if (type == "pdf") {
-        const content = await ocrPdf(file, name);
-        return content;
-    }
-    else {
-        const content = await ocrImage(file, type);
-        return content;
-    }
-
+  if (type == "pdf") {
+    const content = await ocrPdf(file, name);
+    return content;
+  } else {
+    const content = await ocrImage(file, type);
+    return content;
+  }
 }
 
 async function ocrImage(file: string, type: "jpeg" | "png"): Promise<string> {
@@ -30,12 +27,12 @@ async function ocrImage(file: string, type: "jpeg" | "png"): Promise<string> {
         content: [
           {
             type: "input_text",
-            text: "Please extract the text from this image. Just return the text from the image, nothing else. Format it in Markdown.",
+            text: "Please extract the text from this image. Just return the text from the image, nothing else. Format it in Markdown, including different levels of headings to preserve hierarchy. Provide ready-to-use Markdown, and DO NOT include ```.",
           },
           {
             type: "input_image",
             image_url: `data:image/${type};base64,${file}`,
-            detail: "auto"
+            detail: "auto",
           },
         ],
       },
@@ -53,7 +50,7 @@ async function ocrPdf(file: string, name: string): Promise<string> {
         content: [
           {
             type: "input_text",
-            text: "Please extract the text from this PDF. Just return the text from the PDF, nothing else. Format it in Markdown.",
+            text: "Please extract the text from this PDF. Just return the text from the PDF, nothing else. Format it in Markdown, including different levels of headings to preserve hierarchy. Provide ready-to-use Markdown, and DO NOT include ```.",
           },
           {
             type: "input_file",
