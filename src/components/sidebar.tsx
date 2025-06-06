@@ -21,7 +21,7 @@ export default function Sidebar({
       bg="gray.800"
       alignItems="left"
     >
-      <Text px="2" fontSize="2xl" fontWeight="semibold">
+      <Text px="2" fontSize="2xl" fontWeight="semibold" textColor="white">
         Jarvis
       </Text>
       <HStack

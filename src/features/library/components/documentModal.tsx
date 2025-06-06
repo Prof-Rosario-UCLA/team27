@@ -5,11 +5,13 @@ import {
   ModalHeader,
   ModalBody,
   ModalCloseButton,
-  Text,
   Box,
   Spinner,
+  Button,
+  HStack,
+  Code,
 } from "@chakra-ui/react";
-
+import MarkdownRenderer from "./markdown";
 import { useEffect, useState } from "react";
 
 interface DocumentModalProps {
@@ -23,8 +25,9 @@ export default function DocumentModal({
   selectedDocument,
   onClose,
 }: DocumentModalProps) {
-  const [documentBody, setDocumentBody] = useState("");
-  const [documentLoading, setDocumentLoading] = useState(true);
+  const [documentBody, setDocumentBody] = useState<string>("");
+  const [documentLoading, setDocumentLoading] = useState<boolean>(true);
+  const [selectedMode, setSelectedMode] = useState<"raw" | "rendered">("raw");
 
   useEffect(() => {
     async function loadDocument() {
@@ -49,15 +52,48 @@ export default function DocumentModal({
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={() => onClose()}>
+      <Modal isOpen={isOpen} onClose={() => onClose()} size="3xl">
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>{selectedDocument}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Box>
-              {documentLoading && <Spinner />}
-              <Text>{documentBody}</Text>
+              <HStack>
+                <Button
+                  onClick={() => {
+                    setSelectedMode("raw");
+                  }}
+                  bgColor={selectedMode == "raw" ? "blue.500" : "gray.200"}
+                >
+                  Raw
+                </Button>
+                <Button
+                  onClick={() => {
+                    setSelectedMode("rendered");
+                  }}
+                  bgColor={selectedMode == "rendered" ? "blue.500" : "gray.200"}
+                >
+                  Rendered
+                </Button>
+              </HStack>
+              <Box alignItems="center" mt="4">
+                {documentLoading && <Spinner />}
+                {selectedMode == "raw" && (
+                  <Code
+                    borderRadius="md"
+                    colorScheme="blackAlpha"
+                    overflowX="auto"
+                    maxWidth="100%"
+                    p="4"
+                  >
+                    {documentBody}
+                  </Code>
+                )}
+                {selectedMode == "rendered" && (
+                  <MarkdownRenderer content={documentBody} />
+                )}
+              </Box>
             </Box>
           </ModalBody>
         </ModalContent>
