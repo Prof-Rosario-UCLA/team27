@@ -1,6 +1,5 @@
 "use client";
 
-import { agent } from "@/lib/agent";
 import { VStack, Text, Input, Box, Button } from "@chakra-ui/react";
 import { useState } from "react";
 
