@@ -21,6 +21,7 @@ export async function ocrFile(
 async function ocrImage(file: string, type: "jpeg" | "png"): Promise<string> {
   const response = await openai.responses.create({
     model: "gpt-4o",
+    temperature: 0,
     input: [
       {
         role: "user",
@@ -44,6 +45,7 @@ async function ocrImage(file: string, type: "jpeg" | "png"): Promise<string> {
 async function ocrPdf(file: string, name: string): Promise<string> {
   const response = await openai.responses.create({
     model: "gpt-4o",
+    temperature: 0,
     input: [
       {
         role: "user",
