@@ -64,7 +64,7 @@ export default function DocSection() {
   }, []);
 
   return (
-    <Box w="full" background="gray.200" p="4" borderRadius="lg">
+    <Box w="full" background="gray.200" p="4" borderRadius="lg" h="full">
       <VStack>
         <Text fontSize="2xl" fontWeight="semibold">
           Documents

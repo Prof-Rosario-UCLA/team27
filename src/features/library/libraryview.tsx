@@ -18,12 +18,14 @@ export default function LibraryView() {
         }}
         gap="16"
         align="top"
-        mx="auto"
+        h="full"
+        minH="calc(100vh - 64px)"
       >
         <Flex
           w="full"
           justify="center"
           align={{ base: "center", xl: "flex-start" }}
+          mb={{ base: "0", xl: "16" }}
         >
           <WebSection />
         </Flex>
@@ -31,6 +33,7 @@ export default function LibraryView() {
           w="full"
           justify="center"
           align={{ base: "center", xl: "flex-start" }}
+          mb="16"
         >
           <DocSection />
         </Flex>

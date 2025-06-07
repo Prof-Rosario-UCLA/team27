@@ -44,7 +44,7 @@ export default function WebSection() {
   };
 
   return (
-    <Box w="full" bgColor="gray.200" p="4" borderRadius="lg">
+    <Box w="full" bgColor="gray.200" p="4" borderRadius="lg" h="full">
       <VStack>
         <Text fontSize="2xl" fontWeight="semibold">
           Web
