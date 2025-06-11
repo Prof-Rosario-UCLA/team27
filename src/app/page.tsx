@@ -6,7 +6,8 @@ import ChatView from "@/features/chat/chatview";
 import LibraryView from "@/features/library/libraryview";
 import AccountView from "@/features/account/accountview";
 import { useEffect, useState } from "react";
-import { Box, useMediaQuery } from "@chakra-ui/react";
+import { Box, VStack, Button, useMediaQuery } from "@chakra-ui/react";
+import { signIn, useSession } from "next-auth/react";
 
 export default function Home() {
   const [selectedTab, setSelectedTab] = useState<
@@ -22,7 +23,9 @@ export default function Home() {
     setSidebarOpen(wideScreen);
   }, [wideScreen]);
 
-  return (
+  const { data: session } = useSession();
+
+  return session ? (
     <>
       {sidebarOpen && (
         <Sidebar
@@ -40,5 +43,17 @@ export default function Home() {
         {selectedTab === "settings" && <AccountView />}
       </Box>
     </>
+  ) : (
+    <Box>
+      <VStack p="16">
+        <Button
+          onClick={() => {
+            signIn("google");
+          }}
+        >
+          Sign In
+        </Button>
+      </VStack>
+    </Box>
   );
 }

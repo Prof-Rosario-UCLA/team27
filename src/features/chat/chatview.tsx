@@ -2,6 +2,7 @@
 
 import { VStack, Text, Input, Box, Button } from "@chakra-ui/react";
 import { useState } from "react";
+import { useSession } from "next-auth/react";
 
 export default function ChatView() {
   const [isNewChat, setIsNewChat] = useState(true);
@@ -28,6 +29,8 @@ export default function ChatView() {
     }
   };
 
+  const { data: session } = useSession();
+
   return (
     <Box>
       <Text fontSize="xl" fontWeight="semibold" p="4">
@@ -35,7 +38,7 @@ export default function ChatView() {
       </Text>
       <VStack px="16">
         <Text fontSize="2xl" fontWeight="semibold">
-          Talk to your knowledge base
+          Welcome, {session?.user?.name || "Guest"}
         </Text>
         <Input
           onChange={(e) => {

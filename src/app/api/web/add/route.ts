@@ -2,8 +2,15 @@ import { NextRequest, NextResponse } from "next/server";
 import { tavily, TavilyExtractResponse } from "@tavily/core";
 import { chunkify, embed } from "@/lib/nlp";
 import { getDB } from "@/lib/db";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 export async function POST(request: NextRequest) {
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   const body = await request.json();
   const { url } = body;
 
@@ -11,7 +18,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "url is required" }, { status: 400 });
   }
 
-  let response: TavilyExtractResponse
+  let response: TavilyExtractResponse;
 
   try {
     const tavilyClient = tavily({
