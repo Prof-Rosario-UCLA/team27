@@ -37,7 +37,7 @@ export default function Home() {
       {!sidebarOpen && (
         <SmallSidebar setSidebarOpen={setSidebarOpen}></SmallSidebar>
       )}
-      <Box pl={sidebarOpen ? "200px" : "50px"} transition="all 0.5s ease">
+    <Box pl={sidebarOpen ? "200px" : "0px"} transition="all 0.5s ease">
         {selectedTab === "chat" && <ChatView />}
         {selectedTab === "library" && <LibraryView />}
         {selectedTab === "settings" && <AccountView />}

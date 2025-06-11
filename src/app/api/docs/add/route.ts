@@ -3,7 +3,7 @@ import { ocrFile } from "@/lib/ocr";
 import { chunkify, embed } from "@/lib/nlp";
 import { getDB } from "@/lib/db";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth";
 
 export async function POST(request: NextRequest) {
   const session = await getServerSession(authOptions);

@@ -6,7 +6,7 @@ import {
   UnorderedList,
   OrderedList,
   ListItem,
-  Code,
+  // Code,
   Image,
 } from "@chakra-ui/react";
 
@@ -25,17 +25,17 @@ const Markdown2React: Components = {
   ul: (props) => <UnorderedList pl="4" {...props} />,
   ol: (props) => <OrderedList pl="4" {...props} />,
   li: (props) => <ListItem {...props} />,
-  code: (props) => (
-    <Code
-      colorScheme="blackAlpha"
-      borderRadius="md"
-      p="1"
-      fontSize="sm"
-      maxWidth="100%"
-      overflowX="auto"
-      {...props}
-    />
-  ),
+  // code: ({ inline, children, props }) => (
+  //   <Code
+  //     colorScheme="blackAlpha"
+  //     borderRadius="md"
+  //     p="1"
+  //     fontSize="sm"
+  //     maxWidth="100%"
+  //     overflowX="auto"
+  //     {...props}
+  //   />
+  // ),
   img: () => <Image alt="" display="none"></Image>,
 };
 
