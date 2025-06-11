@@ -8,6 +8,7 @@ import AccountView from "@/features/account/accountview";
 import { useEffect, useState } from "react";
 import { Box, VStack, Button, useMediaQuery } from "@chakra-ui/react";
 import { signIn, useSession } from "next-auth/react";
+import CookieBanner from "@/components/cookieBanner";
 
 export default function Home() {
   const [selectedTab, setSelectedTab] = useState<
@@ -27,6 +28,7 @@ export default function Home() {
 
   return session ? (
     <>
+      <CookieBanner />
       {sidebarOpen && (
         <Sidebar
           selectedTab={selectedTab}
@@ -37,7 +39,7 @@ export default function Home() {
       {!sidebarOpen && (
         <SmallSidebar setSidebarOpen={setSidebarOpen}></SmallSidebar>
       )}
-    <Box pl={sidebarOpen ? "200px" : "0px"} transition="all 0.5s ease">
+      <Box pl={sidebarOpen ? "200px" : "0px"} transition="all 0.5s ease">
         {selectedTab === "chat" && <ChatView />}
         {selectedTab === "library" && <LibraryView />}
         {selectedTab === "settings" && <AccountView />}
