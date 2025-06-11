@@ -3,7 +3,7 @@ import { Recursive } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/app/providers";
 
-const recursive = Recursive ({
+const recursive = Recursive({
   weight: ["400", "700"],
   variable: "--font-serif",
   subsets: ["latin"],

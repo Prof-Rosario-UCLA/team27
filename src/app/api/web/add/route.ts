@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { tavily } from "@tavily/core";
+import { tavily, TavilyExtractResponse } from "@tavily/core";
 import { chunkify, embed } from "@/lib/nlp";
 import { getDB } from "@/lib/db";
 
@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "url is required" }, { status: 400 });
   }
 
-  let response;
+  let response: TavilyExtractResponse
 
   try {
     const tavilyClient = tavily({
@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
     const documents = embeddings.map((vector, index) => ({
       content: chunks[index],
       embeddings: vector,
-      source: url,
+      source: response.results[0].url,
     }));
     const db = await getDB();
     await db.collection("embedded_chunks").insertMany(documents);

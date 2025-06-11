@@ -1,7 +1,7 @@
 import { MongoClient, Db } from "mongodb";
 
 const uri = process.env.MONGO_URI || "";
-const client = new MongoClient(uri);
+export const client = new MongoClient(uri);
 
 let db: Db | null = null;
 
