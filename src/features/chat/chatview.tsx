@@ -17,7 +17,7 @@ export default function ChatView() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ threadId: "default", message: currentMessage }),
+        body: JSON.stringify({ message: currentMessage }),
       });
       if (!response.ok) {
         throw new Error("Agent error");
@@ -36,21 +36,29 @@ export default function ChatView() {
       <Text fontSize="xl" fontWeight="semibold" p="4">
         Chat
       </Text>
-      <VStack px="16">
-        <Text fontSize="2xl" fontWeight="semibold">
-          Welcome, {session?.user?.name || "Guest"}
-        </Text>
-        <Input
-          onChange={(e) => {
-            setCurrentMessage(e.target.value);
-          }}
-          placeholder="What's in my syllabus for CS 144?"
-        ></Input>
-        <Button onClick={onSubmit} colorScheme="blue">
-          {isNewChat ? "Start Chat" : "Send Message"}
-        </Button>
-        {agentResponse && <Text fontSize="lg">{agentResponse}</Text>}
-      </VStack>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          onSubmit();
+        }}
+      >
+        <VStack px="16">
+          <Text fontSize="2xl" fontWeight="semibold">
+            Welcome, {session?.user?.name || "Guest"}
+          </Text>
+          <Input
+            onChange={(e) => {
+              setCurrentMessage(e.target.value);
+            }}
+            value={currentMessage}
+            placeholder="What's in my syllabus for CS 144?"
+          ></Input>
+          <Button type="submit" onClick={onSubmit} colorScheme="blue">
+            Go
+          </Button>
+          {agentResponse && <Text fontSize="lg">{agentResponse}</Text>}
+        </VStack>
+      </form>
     </Box>
   );
 }

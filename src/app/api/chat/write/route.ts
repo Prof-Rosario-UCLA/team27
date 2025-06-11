@@ -10,12 +10,12 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { threadId, message } = await request.json();
+  const { message } = await request.json();
 
   try {
     const agentResult = await agent.invoke(
       { messages: [new HumanMessage(message)] },
-      { configurable: { thread_id: threadId } }
+      { configurable: { thread_id: session.user?.email } }
     );
     const answer = agentResult.messages.at(-1)?.text || "No answer.";
     return new NextResponse(JSON.stringify({ answer }), { status: 200 });

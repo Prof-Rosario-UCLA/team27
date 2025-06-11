@@ -12,7 +12,10 @@ export async function GET() {
   const db = await getDB();
   const results = await db
     .collection("documents")
-    .find({ type: "file" }, { projection: { source: 1, _id: 0 } });
+    .find(
+      { type: "file", owner: session.user?.email },
+      { projection: { source: 1, _id: 0 } }
+    );
 
   const urls = (await results.toArray()).map((doc) => doc.source);
 

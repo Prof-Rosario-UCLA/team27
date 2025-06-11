@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
   if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-  
+
   const formData = await request.formData();
   const file = formData.get("file") as File | null;
 
@@ -38,6 +38,7 @@ export async function POST(request: NextRequest) {
       content: chunks[index],
       embeddings: vector,
       source: file.name,
+      owner: session.user?.email,
     }));
     const db = await getDB();
     await db.collection("embedded_chunks").insertMany(documents);
@@ -45,6 +46,7 @@ export async function POST(request: NextRequest) {
       content: fileContent,
       source: file.name,
       type: "file",
+      owner: session.user?.email,
     });
   } catch (error) {
     console.error("Error processing file:", error);

@@ -43,6 +43,7 @@ export async function POST(request: NextRequest) {
       content: chunks[index],
       embeddings: vector,
       source: response.results[0].url,
+      owner: session.user?.email,
     }));
     const db = await getDB();
     await db.collection("embedded_chunks").insertMany(documents);
@@ -50,6 +51,7 @@ export async function POST(request: NextRequest) {
       content: response.results[0].rawContent,
       source: response.results[0].url,
       type: "web",
+      owner: session.user?.email,
     });
   } catch (error) {
     console.error("Error processing URL:", error);

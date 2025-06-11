@@ -29,6 +29,7 @@ export async function GET(
   const db = await getDB();
   const result = await db.collection("documents").findOne({
     source: decodedUrl,
+    owner: session.user?.email,
   });
 
   if (!result) {
