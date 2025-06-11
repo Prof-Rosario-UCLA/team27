@@ -1,0 +1,63 @@
+name: Build and Deploy to Google App Engine
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+      - run: npm run build
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: source-code
+          path: .
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment: production
+
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/download-artifact@v4
+      with:
+        name: source-code
+        path: .
+    
+    - id: envars
+      run: |
+        envsubst < app.yaml.template > app.yaml
+      env:
+        AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
+        AUTH_GOOGLE_ID: ${{ secrets.AUTH_GOOGLE_ID }}
+        AUTH_GOOGLE_SECRET: ${{ secrets.AUTH_GOOGLE_SECRET }}
+        TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+    
+    - id: auth
+      uses: google-github-actions/auth@v2
+      with:
+        credentials_json: ${{ secrets.GCP_KEY }}
+    
+    - id: deploy
+      uses: google-github-actions/deploy-appengine@v2
+      with:
+        deliverables: 'app.yaml'
+        project_id: 'cs144-25s-tzantchev'
