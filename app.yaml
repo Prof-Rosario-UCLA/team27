@@ -4,7 +4,6 @@ entrypoint: npm run start
 instance_class: F2
 
 build_env_variables:
-  NODE_ENV: production
   NEXT_TELEMETRY_DISABLED: "1"
   NEXTAUTH_URL: "https://cs144-25s-tzantchev.uw.r.appspot.com"
   MONGO_URI: "${MONGO_URI}"
