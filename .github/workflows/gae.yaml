@@ -31,6 +31,13 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
+    env:
+      MONGO_URI:        ${{ secrets.MONGO_URI }}
+      AUTH_SECRET:      ${{ secrets.AUTH_SECRET }}
+      AUTH_GOOGLE_ID:   ${{ secrets.AUTH_GOOGLE_ID }}
+      AUTH_GOOGLE_SECRET: ${{ secrets.AUTH_GOOGLE_SECRET }}
+      TAVILY_API_KEY:   ${{ secrets.TAVILY_API_KEY }}
+      OPENAI_API_KEY:   ${{ secrets.OPENAI_API_KEY }}
     needs: build
     environment: production
 
@@ -50,6 +57,7 @@ jobs:
         AUTH_GOOGLE_SECRET: ${{ secrets.AUTH_GOOGLE_SECRET }}
         TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
         OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        MONGO_URI: ${{ secrets.MONGO_URI }}
     
     - id: auth
       uses: google-github-actions/auth@v2
