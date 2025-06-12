@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { VStack, Text, Input, Box } from "@chakra-ui/react";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
@@ -32,6 +33,11 @@ export default function ChatView() {
     setLoading(false);
   };
 
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
+    e.preventDefault();
+    onSubmit();
+  };
+
   const { data: session } = useSession();
 
   return (
@@ -41,7 +47,15 @@ export default function ChatView() {
           Chat
         </Text>
       </Box>
-      <VStack px="4" gap="4" flex="1" overflowY="auto">
+      <VStack
+        px="4"
+        gap="4"
+        flex="1"
+        overflowY="auto"
+        align="flex-start"
+        justify="flex-start"
+        w="100%"
+      >
         <Text fontSize="2xl" fontWeight="semibold">
           Welcome, {session?.user?.name || "Guest"}
         </Text>
@@ -55,14 +69,7 @@ export default function ChatView() {
 
         {loading && <Text>Loading...</Text>}
       </VStack>
-      <Box
-        as="form"
-        onSubmit={() => {
-          onSubmit();
-        }}
-        mb="12"
-        w="100%"
-      >
+      <Box as="form" onSubmit={handleSubmit} mb="12" w="100%">
         <Input
           onChange={(e) => {
             setCurrentMessage(e.target.value);

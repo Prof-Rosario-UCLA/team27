@@ -2,6 +2,7 @@ import { DynamicStructuredTool } from "@langchain/core/tools";
 import { z } from "zod";
 import { getDB } from "@/lib/db";
 import { embed } from "@/lib/nlp";
+import { RunnableConfig } from "@langchain/core/runnables";
 
 export const searchTool = new DynamicStructuredTool({
   name: "search_knowledge_base",
@@ -11,9 +12,14 @@ export const searchTool = new DynamicStructuredTool({
       .string()
       .describe("The query to search for in the knowledge base."),
   }),
-  func: async ({ query }: { query: string }) => {
-
+  func: async (
+    { query }: { query: string },
+    _mapRunner,
+    config?: RunnableConfig
+  ) => {
     const db = await getDB();
+
+    const userId = config?.configurable?.userId;
 
     try {
       const embeddedQuery = (await embed([query]))[0];
@@ -25,6 +31,7 @@ export const searchTool = new DynamicStructuredTool({
             queryVector: embeddedQuery,
             numCandidates: 150,
             limit: 10,
+            filter: { owner: userId ?? "" },
           },
         },
         {
