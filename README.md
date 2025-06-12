@@ -3,7 +3,7 @@
 # Deployment instructions
 
 ## Local deployment
-To deploy the application locally, you will need to set values for the environment variables in `.env.example`:
+To deploy the application locally, you will need to set values for the following environment variables:
 
 ```text
 MONGO_URI="" 
