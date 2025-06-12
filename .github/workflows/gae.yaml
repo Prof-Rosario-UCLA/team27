@@ -28,7 +28,7 @@ jobs:
           node-version: 20
           cache: npm
 
-      - run: echo "::notice title=MONGO_URI::${MONGO_URI+set}"
+      - run: echo "::notice title=MONGO_URI::${MONGO_URI:0:8}…"
         shell: bash
         
       - run: npm ci
